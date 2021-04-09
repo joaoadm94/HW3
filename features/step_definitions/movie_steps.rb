@@ -31,6 +31,25 @@ module WithinHelpers
 end
 World(WithinHelpers)
 
+# HW3 part 1
+Given /^the following movies exist:$/ do |movie_table|
+    # Coleta os campos do header da tabela
+    fields = movie_table.raw[0]
+    # Cria um hash usando os campos da tabela como chaves
+    movie = Hash[ fields.collect { |item| [item, ""] } ]
+    # Popular o hash para cada filme
+    movie_table.rows.each do |row|    
+        column = 0
+        fields.each do |field|
+            movie[field] = row[column]
+            column = column + 1 
+        end
+        Movie.create(movie)
+    end
+end
+
+    #Movie.create(movie)
+
 # Single-line step scoper
 When /^(.*) within (.*[^:])$/ do |step, parent|
   with_scope(parent) { When step }
