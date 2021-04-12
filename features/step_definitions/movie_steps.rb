@@ -38,17 +38,35 @@ Given /^the following movies exist:$/ do |movie_table|
     # Cria um hash usando os campos da tabela como chaves
     movie = Hash[ fields.collect { |item| [item, ""] } ]
     # Popular o hash para cada filme
+    @rows = 0
     movie_table.rows.each do |row|    
         column = 0
         fields.each do |field|
             movie[field] = row[column]
-            column = column + 1 
+            column += 1 
         end
         Movie.create(movie)
+        @rows += 1
     end
 end
 
-    #Movie.create(movie)
+Given /^I check the following ratings: (.*)$/ do |ratings|
+  ratings.split(', ').each do |rating|
+    check("ratings_#{rating}")
+  end
+end
+
+Given /^I uncheck the following ratings: (.*)$/ do |ratings|
+  ratings.split(', ').each do |rating|
+    uncheck("ratings_#{rating}")
+  end
+end
+
+Then /^I should see all of the movies$/ do
+  #page.all('table#myTable tr').count.should == 10
+  rows = page.all('tr').count - 1
+  assert rows == @rows
+end
 
 # Single-line step scoper
 When /^(.*) within (.*[^:])$/ do |step, parent|
