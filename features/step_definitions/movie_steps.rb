@@ -50,22 +50,38 @@ Given /^the following movies exist:$/ do |movie_table|
     end
 end
 
+# HW3 part 2
 Given /^I check the following ratings: (.*)$/ do |ratings|
   ratings.split(', ').each do |rating|
     check("ratings_#{rating}")
   end
 end
 
+# HW3 part 2
 Given /^I uncheck the following ratings: (.*)$/ do |ratings|
   ratings.split(', ').each do |rating|
     uncheck("ratings_#{rating}")
   end
 end
 
+# HW3 part 2
 Then /^I should see all of the movies$/ do
-  #page.all('table#myTable tr').count.should == 10
   rows = page.all('tr').count - 1
   assert rows == @rows
+end
+
+# HW3 part 3
+Given /^I check all ratings$/ do
+  Movie.all_ratings.each do |rating|
+    check("ratings_#{rating}")
+  end
+end
+
+# HW3 part 3
+Then /^(?:|I )should see "([^"]*)" before "([^"]*)"$/ do |first, second|
+  first_index = page.body.index(/#{first}/m)
+  second_index = page.body.index(/#{second}/m)
+  assert first_index < second_index
 end
 
 # Single-line step scoper
