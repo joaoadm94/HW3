@@ -52,7 +52,9 @@ end
 
 # HW3 part 2
 Given /^I check the following ratings: (.*)$/ do |ratings|
+  # Separa cada rating 
   ratings.split(', ').each do |rating|
+    # Marca o campo informado
     check("ratings_#{rating}")
   end
 end
@@ -60,12 +62,14 @@ end
 # HW3 part 2
 Given /^I uncheck the following ratings: (.*)$/ do |ratings|
   ratings.split(', ').each do |rating|
+    # Desmarca o campo informado
     uncheck("ratings_#{rating}")
   end
 end
 
 # HW3 part 2
 Then /^I should see all of the movies$/ do
+  # Conta todos os rows, removendo 1 pois o cabecalho tambem eh contado
   rows = page.all('tr').count - 1
   assert rows == @rows
 end
@@ -79,8 +83,11 @@ end
 
 # HW3 part 3
 Then /^(?:|I )should see "([^"]*)" before "([^"]*)"$/ do |first, second|
+  # Encontra a ocorrencia do primeiro termo
   first_index = page.body.index(/#{first}/m)
+  # Encontra a ocorrencia do segundo termo
   second_index = page.body.index(/#{second}/m)
+  # Confere se o primeiro vem antes do segundo
   assert first_index < second_index
 end
 
